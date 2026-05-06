@@ -10,6 +10,7 @@ from PIL import Image
 from pathlib import Path
 from ultralytics import YOLO
 from typing import Tuple, Optional
+import io
 
 
 # Page configuration
@@ -131,7 +132,7 @@ def main():
     # Model settings
     model_path = st.sidebar.text_input(
         "Model Path",
-        value="models/best.pt",
+        value="C:\\Users\\fptsh\\Downloads\\Test app\\project\\yolov8-human-detector\\models\\best.pt",
         help="Path to trained model weights"
     )
 
@@ -206,9 +207,12 @@ def main():
 
             # Download button
             processed_pil = Image.fromarray(processed_image)
+            buf = io.BytesIO()
+            processed_pil.save(buf, format="JPEG")
+            buf.seek(0)
             st.download_button(
                 label="Download Detection Result",
-                data=processed_pil,
+                data=buf,
                 file_name=f"detected_{uploaded_file.name}",
                 mime="image/jpeg"
             )

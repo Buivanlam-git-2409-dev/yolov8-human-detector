@@ -144,7 +144,7 @@ def main():
     parser.add_argument(
         "--model",
         type=str,
-        default="models/best.pt",
+        default="C:\\Users\\fptsh\\Downloads\\Test app\\project\\yolov8-human-detector\\models\\best.pt",
         help="Path to model weights file (default: models/best.pt)"
     )
 
