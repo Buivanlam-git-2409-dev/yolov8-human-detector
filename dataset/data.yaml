@@ -1,0 +1,13 @@
+# YOLOv8 Human Detection Dataset Configuration
+
+# Dataset paths (relative to this file)
+path: .  # dataset root dir
+train: train/images  # train images (relative to 'path')
+val: val/images  # val images (relative to 'path')
+
+# Number of classes
+nc: 1
+
+# Class names
+names:
+  0: human
