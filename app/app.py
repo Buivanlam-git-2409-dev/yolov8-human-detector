@@ -132,7 +132,7 @@ def main():
     # Model settings
     model_path = st.sidebar.text_input(
         "Model Path",
-        value="C:\\Users\\fptsh\\Downloads\\Test app\\project\\yolov8-human-detector\\models\\best.pt",
+        value="models/best.pt",
         help="Path to trained model weights"
     )
 

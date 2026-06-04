@@ -6,7 +6,7 @@ class Config:
     """Application configuration"""
 
     # Model settings
-    MODEL_PATH = "runs/detect/train/weights/best.pt"
+    MODEL_PATH = "models/best.pt"
     MODEL_SIZE = 640
     CONFIDENCE_THRESHOLD = 0.5
     IOU_THRESHOLD = 0.45
