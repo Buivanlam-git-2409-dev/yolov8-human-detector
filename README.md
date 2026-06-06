@@ -1,60 +1,75 @@
-# Human Detector - YOLOv8
+# 🏪 Smart Store People Counting System (YOLOv8)
 
-Dự án này tập trung vào việc xây dựng và huấn luyện mô hình phát hiện người (Human Detection) sử dụng kiến trúc YOLOv8 từ thư viện Ultralytics, kèm theo giao diện web để demo.
+## 📺 Demo
+<div align="center">
+  <video src="results/21d00aa8-33ce-4c81-88c1-fb6c9e8c1e15.webm" width="800" controls autoplay loop muted></video>
+</div>
 
-## Kết quả nhận diện (Demo)
-![Detection Result](dataset/image.png)
+Dự án xây dựng hệ thống đếm số lượng người ra vào cửa hàng/siêu thị thông minh sử dụng thị giác máy tính. Hệ thống kết hợp mô hình YOLOv8 để nhận diện người và các thuật toán theo dõi đối tượng (Multi-Object Tracking) để đếm lượt băng qua vạch (Line Crossing).
 
-## Tính năng chính
-- **Huấn luyện mô hình:** Quy trình huấn luyện tự động với YOLOv8s trên tập dữ liệu người.
-- **Đánh giá (Validation):** Kiểm tra hiệu năng mô hình với các chỉ số mAP.
-- **Dự đoán (Inference):** Hỗ trợ nhận diện người từ hình ảnh local thông qua CLI hoặc giao diện Web.
-- **Xuất mô hình:** Chuyển đổi sang định dạng ONNX để triển khai đa nền tảng.
-- **Web App Demo:** Giao diện web trực quan với Streamlit giúp trải nghiệm nhận diện dễ dàng.
+## 🚀 Tính năng chính
+- **Phát hiện người (Human Detection):** Sử dụng YOLOv8 (với trọng số đã được huấn luyện tối ưu).
+- **Theo dõi đối tượng (Object Tracking):** Hỗ trợ ByteTrack và BoTSort giúp bám đuổi ID người ổn định qua các khung hình.
+- **Đếm người theo vạch (Line Crossing):** Tự động đếm số người đi VÀO (IN) và đi RA (OUT) dựa trên vạch cấu hình linh hoạt (ngang/dọc).
+- **Cảnh báo mật độ (Crowd Alert):** Thông báo khi số lượng người hiện có trong khu vực vượt ngưỡng cho phép.
+- **Web App Demo (Streamlit):** Giao diện web trực quan, cho phép upload video, cấu hình vạch đếm trực tiếp và tải kết quả.
+- **Xuất báo cáo:** Tự động tạo file CSV ghi lại lịch sử các sự kiện băng qua vạch với mốc thời gian chi tiết.
 
-## Cấu trúc dự án
-- `app/app.py`: Streamlit web app chính.
-- `app/utils.py`: Các hàm tiện ích xử lý ảnh và detection cho web app.
-- `scripts/train.py`: Script huấn luyện mô hình.
-- `scripts/predict.py`: CLI tool để chạy dự đoán trên ảnh local.
-- `models/`: Thư mục chứa các file trọng số mô hình (`best.pt`, `last.pt`).
-- `dataset/`: Cấu hình dữ liệu và file ảnh mẫu.
-- `requirements.txt`: Các thư viện phụ thuộc cần cài đặt.
+## 📁 Cấu trúc dự án
+- `app/app.py`: Giao diện Web chính (Streamlit).
+- `app/counter.py`: Logic cốt lõi xử lý việc đếm người và theo dõi ID.
+- `app/utils.py`: Các hàm bổ trợ xử lý hình ảnh và video.
+- `scripts/process_video.py`: Script CLI để xử lý video offline quy mô lớn.
+- `scripts/train.py` & `predict.py`: Công cụ huấn luyện và dự đoán cơ bản trên ảnh.
+- `models/`: Chứa các file trọng số (`best.pt`, `best.onnx`).
+- `outputs/`: Thư mục lưu trữ video kết quả và logs.
+- `sample_videos/`: Video mẫu để kiểm tra hệ thống.
 
-## Cài đặt và sử dụng
+## 🛠️ Cài đặt
 
-### 1. Cài đặt môi trường
-Yêu cầu Python 3.8+. Nên sử dụng môi trường ảo (venv hoặc conda).
+### 1. Yêu cầu hệ thống
+- Python 3.8 trở lên.
+- Nên sử dụng GPU (NVIDIA) để đạt hiệu năng xử lý thời gian thực tốt nhất.
+
+### 2. Cài đặt thư viện
 ```bash
 pip install -r requirements.txt
 ```
 
-### 2. Chạy Web App Demo
+## 💻 Hướng dẫn sử dụng
+
+### 1. Chạy Giao diện Web (Khuyên dùng)
+Giao diện này cho phép bạn cấu hình vạch đếm (Line position) một cách trực quan.
 ```bash
 streamlit run app/app.py
 ```
-Giao diện sẽ hiển thị tại: `http://localhost:8501`
+**Cách sử dụng trên Web:**
+1. Chọn file video đầu vào.
+2. Điều chỉnh **Line Orientation** (Ngang/Dọc) và **Line Position** trên thanh sidebar để khớp với vị trí cửa ra vào.
+3. Thiết lập **Crowd Threshold** để nhận cảnh báo mật độ.
+4. Nhấn **Process Video** và đợi hệ thống xử lý.
+5. Xem kết quả trực tiếp hoặc tải xuống video đã được gán nhãn và file CSV báo cáo.
 
-### 3. Sử dụng công cụ dòng lệnh (CLI)
-Để nhận diện một ảnh bất kỳ qua command line:
+### 2. Sử dụng dòng lệnh (CLI)
+Dành cho việc xử lý hàng loạt hoặc tích hợp vào hệ thống khác:
 ```bash
-python scripts/predict.py --source "đường/dẫn/đến/ảnh.jpg" --output "đường/dẫn/lưu/kết_quả.jpg"
+python scripts/process_video.py --source "path/to/video.mp4" --output "outputs/result.mp4" --line-position 400 --save-csv
 ```
 
-## Kết quả huấn luyện
-Dựa trên kiến trúc YOLOv8 small:
+## 📊 Kết quả huấn luyện
+Hệ thống sử dụng mô hình YOLOv8 Small được tinh chỉnh:
 - **mAP50:** ~0.847
 - **mAP50-95:** ~0.598
+- Hiệu năng: Xử lý mượt mà trên các dòng GPU phổ thông.
 
-## Lộ trình phát triển
-- [x] Web app cơ bản với Streamlit
-- [ ] Video processing
-- [ ] Real-time webcam detection
-- [ ] People counting
-- [ ] Tracking (DeepSORT, ByteTrack)
-- [ ] Heatmap visualization
-- [ ] Docker deployment
-- [ ] API endpoint
+## 🗺️ Lộ trình phát triển (Roadmap)
+- [x] Web app tương tác với Streamlit.
+- [x] Video processing & Object Tracking.
+- [x] Đếm người IN/OUT qua vạch.
+- [x] Xuất báo cáo CSV sự kiện.
+- [ ] Tích hợp Webcam/Camera RTSP trực tiếp.
+- [ ] Hiển thị biểu đồ thống kê (Heatmap, Time-series).
+- [ ] Đóng gói Docker để triển khai nhanh.
 
 ---
-*Dự án được thực hiện nhằm mục đích nghiên cứu và ứng dụng Computer Vision trong nhận diện đối tượng.*
+*Dự án được phát triển nhằm mục đích cung cấp giải pháp phân tích dữ liệu khách hàng cho các cửa hàng bán lẻ.*

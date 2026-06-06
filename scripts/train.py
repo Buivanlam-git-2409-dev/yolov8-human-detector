@@ -55,7 +55,7 @@ def train_model(data_yaml: str,
         results = model.train(
             data=data_yaml,
             epochs=epochs,
-            imgsz=imgz,
+            imgsz=imgsz,
             batch=batch,
             device=device,
             project=project,
