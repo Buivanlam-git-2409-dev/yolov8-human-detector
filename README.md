@@ -2,7 +2,7 @@
 
 ## 📺 Demo
 <div align="center">
-  <video src="results/21d00aa8-33ce-4c81-88c1-fb6c9e8c1e15.webm" width="800" controls autoplay loop muted></video>
+  <video src="outputs\videos\counted_clip9_1780662859.mp4" width="800" controls autoplay loop muted></video>
 </div>
 
 Dự án xây dựng hệ thống đếm số lượng người ra vào cửa hàng/siêu thị thông minh sử dụng thị giác máy tính. Hệ thống kết hợp mô hình YOLOv8 để nhận diện người và các thuật toán theo dõi đối tượng (Multi-Object Tracking) để đếm lượt băng qua vạch (Line Crossing).
